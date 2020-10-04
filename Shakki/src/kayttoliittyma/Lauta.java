@@ -18,7 +18,7 @@ import logiikka.Tilanne.Nappula;
  */
 public class Lauta extends JPanel {
 	
-	private static final String AAKKOSET = "ABCDEFHI";
+	private static final String AAKKOSET = "ABCDEFGH";
 	private int reuna, ruutu, ihminen;
 	private BufferedImage[][] nappulat;
 	private Color tumma, vaalea, siirto;
