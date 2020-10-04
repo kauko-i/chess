@@ -10,6 +10,12 @@ import logiikka.Tilanne;
 import logiikka.Tilanne.Nappula;
 
 
+
+/**
+ * Shakkilaudan grafiikka.
+ * @author Ilari Kauko
+ * @version 4.10.2020
+ */
 public class Lauta extends JPanel {
 	
 	private static final String AAKKOSET = "ABCDEFHI";
@@ -18,6 +24,18 @@ public class Lauta extends JPanel {
 	private Color tumma, vaalea, siirto;
 	private Tilanne peli;
 	
+	
+	/**
+	 * konstruktori
+	 * @param ihminen 0, jos valkoiset nappulat halutaan laudan alareunaan ja 1, jos mustat
+	 * @param reuna paljonko pikeleitä ruutujen reunoille jätetään
+	 * @param ruutu ruudun leveys pikseleinä
+	 * @param nappulat nappulakuvakkeet, jotka laudalle piirretään
+	 * @param tumma väri, jolla tummat ruudut väritetään
+	 * @param vaalea väri, jolla vaaleat ruudut väritetään
+	 * @param siirto väri, jolla kuvataan viiva juuri siirretyn nappulan lähtö- ja maaliruudun välillä
+	 * @param gui käyttöliittymäikkuna, johon lauta piirretään
+	 */
 	public Lauta(int ihminen, int reuna, int ruutu, BufferedImage[][] nappulat, Color tumma, Color vaalea, Color siirto, ShakkiSwing gui) {
 		this.ihminen = ihminen;
 		this.reuna = reuna;
@@ -38,11 +56,11 @@ public class Lauta extends JPanel {
 			}
 		});
 	}
+
 	
-	public Dimension getPreferredSize() {
-		return new Dimension(reuna*2 + ruutu*8, reuna*2 + ruutu*8);
-	}
-	
+	/**
+	 * Piirtää kentän uudelleen vallitsevan tilanteen mukaan.
+	 */
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
@@ -80,16 +98,35 @@ public class Lauta extends JPanel {
 		}
 	}
 	
+	
+	/**
+	 * Määrittää laudalla klikatun kohdan koordinaattien perusteella ruudun, jota klikattiin
+	 * @param x klikatun kohdan x-koordinaatti
+	 * @param y klikatun kohdan y-koordinaatti
+	 * @return klikatun ruudun rivi ja sarake
+	 */
 	public int[] toLogiikka(double x, double y) {
 		if (ihminen == 0) return new int[] {(int)((x - reuna)/ruutu), 7 - (int)((y - reuna)/ruutu)};
 		return new int[] {7 - (int)((x - reuna)/ruutu), (int)((y - reuna)/ruutu)};
 	}
 	
+	
+	/**
+	 * Edellisen lähes käänteisfunktio: annettuja riviä ja saraketta vastaavan ruudun keskipiste näytöllä
+	 * @param x rivi
+	 * @param y sarake
+	 * @return riviä ja saraketta vastaavan ruudun keskipisteen koordinaatit näytöllä
+	 */
 	public int[] toGUI(int x, int y) {
 		if (ihminen == 0) return new int[] {reuna + x*ruutu, reuna + 7*ruutu - y*ruutu};
 		return new int[] {reuna + 7*ruutu - x*ruutu, reuna + y*ruutu};
 	}
 	
+	
+	/**
+	 * Piirtää tilanteen uudelleen.
+	 * @param peli tilanne
+	 */
 	public void piirra(Tilanne peli) {
 		this.peli = peli;
 		SwingUtilities.invokeLater(new Runnable() {
@@ -99,6 +136,16 @@ public class Lauta extends JPanel {
 		});
 	}
 	
+	
+	/**
+	 * Kirjoittaa tekstin annetun suorakulmion keskelle.
+	 * @param g alusta, johon kirjoitetaan
+	 * @param text kirjoitettava teksti
+	 * @param x1 suorakulmion vasen reuna
+	 * @param y1 suorakulmion yläreuna
+	 * @param wi suorakulmion leveys
+	 * @param he suorakulmion korkeus
+	 */
 	public void drawCenteredString(Graphics g, String text, int x1, int y1, int wi, int he) {
 	    FontMetrics metrics = g.getFontMetrics(getFont());
 	    int x = x1 + wi/2 - metrics.stringWidth(text)/2;
